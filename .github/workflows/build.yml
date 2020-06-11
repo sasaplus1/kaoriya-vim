@@ -67,6 +67,8 @@ jobs:
       - run: docker cp $(docker ps -q):/tmp/vim.tar.gz .
       - run: docker cp $(docker ps -q):/root/vim-kaoriya/VERSION .
       - run: docker stop $(docker ps -q)
+      - id: distribution
+        run: echo "::set-output name=version::$(grep DISTRIB_CODENAME /etc/lsb-release | cut -d '=' -f 2)"
       - id: vim
         run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
       - run: tar fvx ./vim.tar.gz
@@ -74,10 +76,10 @@ jobs:
       - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
       - run: cp -fr ./vim/* ./deb/usr/local
       - run: >-
-          printf -- 'Version: %s-%s\n' "${vim_version}" "${deb_version}" >> ./control
+          printf -- 'Version: %s-%s\n' "${vim_version}" "1${distribution_version}" >> ./control
         env:
+          distribution_version: ${{ steps.distribution.outputs.version }}
           vim_version: ${{ steps.vim.outputs.version }}
-          deb_version: ${{ github.run_number }}
       - run: cp ./control ./deb/DEBIAN
       - run: cat ./deb/DEBIAN/control
       - run: fakeroot dpkg-deb --build deb .
