@@ -75,7 +75,7 @@ jobs:
       - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
       - run: cp -fr ./vim/* ./deb/usr/local
       - run: >-
-          printf -- 'Version: %s-%s' "${vim_version}" "${deb_version}" >> ./control
+          printf -- 'Version: %s-%s\n' "${vim_version}" "${deb_version}" >> ./control
         env:
           vim_version: ${{ steps.vim.outputs.version }}
           deb_version: ${{ github.run_number }}
