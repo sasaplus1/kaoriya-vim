@@ -80,6 +80,8 @@ jobs:
         env:
           distribution_version: ${{ steps.distribution.outputs.version }}
           vim_version: ${{ steps.vim.outputs.version }}
+      - run: >-
+          printf -- 'Depends: %s\n' "libtinfo-dev" >> ./control
       - run: cp ./control ./deb/DEBIAN
       - run: cat ./deb/DEBIAN/control
       - run: fakeroot dpkg-deb --build deb .
