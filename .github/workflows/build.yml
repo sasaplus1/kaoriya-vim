@@ -91,13 +91,13 @@ jobs:
       - run: dpkg -c "${deb}"
         env:
           deb: ${{ steps.deb.outputs.filename }}
-      - run: docker run --detach --init --rm ${{ matrix.container }} tail -f /dev/null
+      - run: docker run --detach --env DEBIAN_FRONTEND=noninteractive --init --rm ${{ matrix.container }} tail -f /dev/null
       - run: docker cp ${deb} $(docker ps -q):/root
         env:
           deb: ${{ steps.deb.outputs.filename }}
       - run: >-
-          docker exec -it $(docker ps -q)
-          sh -c 'DEBIAN_FRONTEND=noninteractive apt --yes update && DEBIAN_FRONTEND=noninteractive apt --yes install *.deb && vim --version'
+          docker exec $(docker ps -q)
+          sh -c 'apt --yes update && apt --yes install *.deb && vim --version'
       - run: docker stop $(docker ps -q)
       - uses: actions/upload-artifact@master
         with:
