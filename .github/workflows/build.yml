@@ -16,40 +16,6 @@ jobs:
     env:
       DEBIAN_FRONTEND: nointeractive
       DOCKER_BUILDKIT: 1
-      configurations: >-
-        --enable-fail-if-missing
-        --disable-smack
-        --disable-selinux
-        --disable-xsmp
-        --disable-xsmp-interact
-        --enable-luainterp=dynamic
-        --enable-pythoninterp=dynamic
-        --enable-python3interp=dynamic
-        --enable-cscope
-        --disable-netbeans
-        --enable-terminal
-        --enable-multibyte
-        --disable-rightleft
-        --disable-arabic
-        --enable-gui=no
-        --with-compiledby=sasa+1
-        --with-features=huge
-        --with-luajit
-        --without-x
-        --with-tlib=ncurses
-      image: ${{ matrix.container }}
-      setup: >-
-        DEBIAN_FRONTEND=noninteractive
-        apt --yes update &&
-        apt --yes install
-        autoconf git make
-        build-essential libncurses-dev
-        gettext
-        lua5.1 liblua5.1-dev luajit libluajit-5.1-dev
-        python python-dev
-        python3 python3-dev &&
-        apt-get --yes clean &&
-        rm -rf /var/lib/apt/lists/*
     steps:
       - uses: actions/checkout@v2
       - run: >
@@ -59,6 +25,40 @@ jobs:
           --build-arg "image=${image}"
           --build-arg "setup=${setup}"
           .
+        env:
+          configurations: >-
+            --enable-fail-if-missing
+            --disable-smack
+            --disable-selinux
+            --disable-xsmp
+            --disable-xsmp-interact
+            --enable-luainterp=dynamic
+            --enable-pythoninterp=dynamic
+            --enable-python3interp=dynamic
+            --enable-cscope
+            --disable-netbeans
+            --enable-terminal
+            --enable-multibyte
+            --disable-rightleft
+            --disable-arabic
+            --enable-gui=no
+            --with-compiledby=sasa+1
+            --with-features=huge
+            --with-luajit
+            --without-x
+            --with-tlib=ncurses
+          image: ${{ matrix.container }}
+          setup: >-
+            apt --yes update &&
+            apt --yes install
+            autoconf git make
+            build-essential libncurses-dev
+            gettext
+            lua5.1 liblua5.1-dev luajit libluajit-5.1-dev
+            python python-dev
+            python3 python3-dev &&
+            apt-get --yes clean &&
+            rm -rf /var/lib/apt/lists/*
       - run: docker run --detach --init --rm ${{ github.repository }} tail -f /dev/null
       - run: docker cp $(docker ps -q):/tmp/vim.tar.gz .
       - run: docker stop $(docker ps -q)
