@@ -71,7 +71,6 @@ jobs:
         run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
       - run: tar fvx ./vim.tar.gz
       - run: ldd ./vim/bin/vim
-      - run: ./vim/bin/vim --version
       - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
       - run: cp -fr ./vim/* ./deb/usr/local
       - run: >-
