@@ -53,6 +53,7 @@ jobs:
           image: ${{ matrix.container }}
           setup: >-
             apt --yes update &&
+            apt --yes install tzdata &&
             apt --yes install
             autoconf git make
             build-essential libncurses-dev
