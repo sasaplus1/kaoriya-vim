@@ -18,9 +18,12 @@ jobs:
       DOCKER_BUILDKIT: 1
     steps:
       - uses: actions/checkout@v2
+      - run: sudo apt --yes update
+      - run: sudo apt --yes install fakeroot
       - run: >
           docker build
           --tag ${{ github.repository }}
+          --env DEBIAN_FRONTEND=noninteractive
           --build-arg "configurations=${configurations}"
           --build-arg "image=${image}"
           --build-arg "setup=${setup}"
@@ -61,7 +64,26 @@ jobs:
             rm -rf /var/lib/apt/lists/*
       - run: docker run --detach --init --rm ${{ github.repository }} tail -f /dev/null
       - run: docker cp $(docker ps -q):/tmp/vim.tar.gz .
+      - run: docker cp $(docker ps -q):/root/vim-kaoriya/VERSION .
       - run: docker stop $(docker ps -q)
-      - run: tar fvx vim.tar.gz
-      - run: ldd vim/bin/vim
-      - run: vim/bin/vim --version
+      - id: vim
+        run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
+      - run: tar fvx ./vim.tar.gz
+      - run: ldd ./vim/bin/vim
+      - run: ./vim/bin/vim --version
+      - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
+      - run: cp -f ./vim/* ./deb/usr/local
+      - run: printf -- 'Version: %s-%s' "${vim_version}" "${deb_version}" >> ./deb/DEBIAN/control
+        env:
+          vim_version: ${{ steps.vim.outputs.version }}
+          deb_version: ${{ github.run_number }}
+      - run: cp ./control ./deb/DEBIAN
+      - run: cat ./deb/DEBIAN/control
+      - run: fakeroot dpkg-deb --build deb .
+      - id: deb
+        run: echo "::set-output name=filename::$(ls -1 kaoriya-vim*.deb)"
+      - run: dpkg -c ${{ steps.deb.outputs.filename }}
+      - uses: actions/upload-artifact@master
+        with:
+          name: ${{ steps.deb.outputs.filename }}
+          path: ${{ steps.deb.outputs.filename }}
