@@ -55,9 +55,10 @@ jobs:
       - run: >
           docker build
           --tag ${{ github.repository }}
-          --build-arg "configurations=$(configurations)"
-          --build-arg "image=$(image)"
-          --build-arg "setup=$(setup)"
+          --build-arg "configurations=${configurations}"
+          --build-arg "image=${image}"
+          --build-arg "setup=${setup}"
+          .
       - run: docker run --detach --init --rm ${{ github.repository }} tail -f /dev/null
       - run: docker cp $(docker ps -q):/tmp/vim.tar.gz .
       - run: docker stop $(docker ps -q)
