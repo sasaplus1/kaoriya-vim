@@ -23,7 +23,7 @@ jobs:
       - run: >
           docker build
           --tag ${{ github.repository }}
-          --env DEBIAN_FRONTEND=noninteractive
+          --build-arg 'DEBIAN_FRONTEND=noninteractive'
           --build-arg "configurations=${configurations}"
           --build-arg "image=${image}"
           --build-arg "setup=${setup}"
@@ -73,7 +73,8 @@ jobs:
       - run: ./vim/bin/vim --version
       - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
       - run: cp -f ./vim/* ./deb/usr/local
-      - run: printf -- 'Version: %s-%s' "${vim_version}" "${deb_version}" >> ./deb/DEBIAN/control
+      - run: >-
+          printf -- 'Version: %s-%s' "${vim_version}" "${deb_version}" >> ./deb/DEBIAN/control
         env:
           vim_version: ${{ steps.vim.outputs.version }}
           deb_version: ${{ github.run_number }}
@@ -82,7 +83,9 @@ jobs:
       - run: fakeroot dpkg-deb --build deb .
       - id: deb
         run: echo "::set-output name=filename::$(ls -1 kaoriya-vim*.deb)"
-      - run: dpkg -c ${{ steps.deb.outputs.filename }}
+      - run: dpkg -c "${deb}"
+        env:
+          deb: ${{ steps.deb.outputs.filename }}
       - uses: actions/upload-artifact@master
         with:
           name: ${{ steps.deb.outputs.filename }}
