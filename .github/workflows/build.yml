@@ -72,7 +72,7 @@ jobs:
       - run: ldd ./vim/bin/vim
       - run: ./vim/bin/vim --version
       - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
-      - run: cp -f ./vim/* ./deb/usr/local
+      - run: cp -fr ./vim/* ./deb/usr/local
       - run: >-
           printf -- 'Version: %s-%s' "${vim_version}" "${deb_version}" >> ./deb/DEBIAN/control
         env:
