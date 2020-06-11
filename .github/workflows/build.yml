@@ -90,6 +90,14 @@ jobs:
       - run: dpkg -c "${deb}"
         env:
           deb: ${{ steps.deb.outputs.filename }}
+      - run: docker run --detach --init --rm ${{ matrix.container }} tail -f /dev/null
+      - run: docker cp ${deb} $(docker ps -q):/root
+        env:
+          deb: ${{ steps.deb.outputs.filename }}
+      - run: >-
+          docker exec -it $(docker ps -q)
+          sh -c 'DEBIAN_FRONTEND=noninteractive apt --yes update && DEBIAN_FRONTEND=noninteractive apt --yes install *.deb && vim --version'
+      - run: docker stop $(docker ps -q)
       - uses: actions/upload-artifact@master
         with:
           name: ${{ steps.deb.outputs.filename }}
