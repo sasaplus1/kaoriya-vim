@@ -39,6 +39,7 @@ build: image := ubuntu:latest
 build: setup := $(strip \
   DEBIAN_FRONTEND=noninteractive \
   apt --yes update && \
+  DEBIAN_FRONTEND=noninteractive \
   apt --yes install \
   autoconf git make \
   build-essential libncurses-dev \
