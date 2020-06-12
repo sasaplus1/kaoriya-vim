@@ -88,7 +88,7 @@ jobs:
       - run: fakeroot dpkg-deb --build deb .
       - id: deb
         run: echo "::set-output name=filename::$(ls -1 kaoriya-vim*.deb)"
-      - run: dpkg -c "${deb}"
+      - run: dpkg -c ${deb}
         env:
           deb: ${{ steps.deb.outputs.filename }}
       - run: docker run --detach --env DEBIAN_FRONTEND=noninteractive --init --rm ${{ matrix.container }} tail -f /dev/null
