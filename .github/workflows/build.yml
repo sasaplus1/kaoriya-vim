@@ -8,12 +8,19 @@ jobs:
   build:
     name: build package
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
+      fail-fast: false
       matrix:
         container:
           - ubuntu:16.04
           - ubuntu:18.04
           - ubuntu:20.04
+        experimental:
+          - false
+        include:
+          - container: ubuntu:devel
+            experimental: true
     env:
       DEBIAN_FRONTEND: nointeractive
       DOCKER_BUILDKIT: 1
