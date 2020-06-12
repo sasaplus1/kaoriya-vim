@@ -79,7 +79,7 @@ jobs:
       - run: docker cp $(docker ps -q):/root/vim-kaoriya/VERSION .
       - id: distribution
         run: >-
-          echo "::set-output name=version::$(docker exec $(docker ps -q) sh -c '. /etc/os-release && echo $VERSION_CODENAME || echo sid')"
+          echo "::set-output name=version::$(docker exec $(docker ps -q) bash -c '. /etc/os-release && echo $VERSION_CODENAME')"
       - run: docker stop $(docker ps -q)
       - id: vim
         run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
@@ -88,7 +88,7 @@ jobs:
       - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
       - run: cp -fr ./vim/* ./deb/usr/local
       - run: >-
-          printf -- 'Version: %s-%s\n' "${vim_version}" "1${distribution_version}" >> ./control
+          printf -- 'Version: %s-%s\n' "${vim_version}" "1${distribution_version:-sid}" >> ./control
         env:
           distribution_version: ${{ steps.distribution.outputs.version }}
           vim_version: ${{ steps.vim.outputs.version }}
@@ -106,11 +106,11 @@ jobs:
       - run: docker cp ${deb} $(docker ps -q):/root
         env:
           deb: ${{ steps.deb.outputs.filename }}
-      - run: docker exec $(docker ps -q) sh -c "apt --yes update && apt --yes install /root/${deb}"
+      - run: docker exec $(docker ps -q) bash -c "apt --yes update && apt --yes install /root/${deb}"
         env:
           deb: ${{ steps.deb.outputs.filename }}
-      - run: docker exec $(docker ps -q) sh -c 'apt --yes install locales && localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8'
-      - run: docker exec $(docker ps -q) sh -c 'LANG=ja_JP.UTF-8 vim --version'
+      - run: docker exec $(docker ps -q) bash -c 'apt --yes install locales && localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8'
+      - run: docker exec $(docker ps -q) bash -c 'LANG=ja_JP.UTF-8 vim --version'
       - run: docker stop $(docker ps -q)
       - uses: actions/upload-artifact@master
         with:
