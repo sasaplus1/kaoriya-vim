@@ -98,6 +98,7 @@ jobs:
       - run: docker exec $(docker ps -q) sh -c "apt --yes update && apt --yes install /root/${deb}"
         env:
           deb: ${{ steps.deb.outputs.filename }}
+      - run: docker exec $(docker ps -q) sh -c 'apt --yes install locales && localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8'
       - run: docker exec $(docker ps -q) sh -c 'LANG=ja_JP.UTF-8 vim --version'
       - run: docker stop $(docker ps -q)
       - uses: actions/upload-artifact@master
