@@ -22,9 +22,9 @@ jobs:
         experimental:
           - false
         include:
-          - container: ubuntu:devel
-            experimental: true
           - container: debian:unstable
+            experimental: true
+          - container: ubuntu:devel
             experimental: true
     env:
       DEBIAN_FRONTEND: nointeractive
