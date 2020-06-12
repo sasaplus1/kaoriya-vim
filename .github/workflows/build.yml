@@ -13,6 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         container:
+          - debian:oldstable
+          - debian:stable
+          - debian:testing
           - ubuntu:16.04
           - ubuntu:18.04
           - ubuntu:20.04
@@ -20,6 +23,8 @@ jobs:
           - false
         include:
           - container: ubuntu:devel
+            experimental: true
+          - container: debian:unstable
             experimental: true
     env:
       DEBIAN_FRONTEND: nointeractive
@@ -76,7 +81,7 @@ jobs:
       - run: docker cp $(docker ps -q):/root/vim-kaoriya/VERSION .
       - id: distribution
         run: >-
-          echo "::set-output name=version::$(docker exec $(docker ps -q) sh -c 'grep DISTRIB_CODENAME /etc/lsb-release | cut -d = -f 2')"
+          echo "::set-output name=version::$(docker exec $(docker ps -q) sh -c 'grep VERSION_CODENAME /etc/os-release | cut -d = -f 2')"
       - run: docker stop $(docker ps -q)
       - id: vim
         run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
