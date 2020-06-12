@@ -97,7 +97,7 @@ jobs:
           deb: ${{ steps.deb.outputs.filename }}
       - run: >-
           docker exec $(docker ps -q)
-          sh -c "apt --yes update && apt --yes install ${deb} && vim --version"
+          sh -c "apt --yes update && apt --yes install ./${deb} && vim --version"
         env:
           deb: ${{ steps.deb.outputs.filename }}
       - run: docker stop $(docker ps -q)
