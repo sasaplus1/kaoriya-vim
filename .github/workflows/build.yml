@@ -5,8 +5,8 @@ on:
   - pull_request
 
 jobs:
-  build:
-    name: build package
+  deb:
+    name: build deb
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
