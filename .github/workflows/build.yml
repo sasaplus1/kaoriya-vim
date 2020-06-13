@@ -79,7 +79,7 @@ jobs:
       - run: docker cp $(docker ps -q):/root/vim-kaoriya/VERSION .
       - id: distribution
         run: >-
-          echo "::set-output name=version::$(docker exec $(docker ps -q) bash -c '. /etc/os-release && echo $VERSION_CODENAME')"
+          echo "::set-output name=version::$(docker exec $(docker ps -q) bash -c '. /etc/os-release && echo ${VERSION_CODENAME:-sid}')"
       - run: docker stop $(docker ps -q)
       - id: vim
         run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
@@ -88,7 +88,7 @@ jobs:
       - run: mkdir -p ./deb/DEBIAN ./deb/usr/local
       - run: cp -fr ./vim/* ./deb/usr/local
       - run: >-
-          printf -- 'Version: %s-%s\n' "${vim_version}" "1${distribution_version:-sid}" >> ./control
+          printf -- 'Version: %s-%s\n' "${vim_version}" "1${distribution_version}" >> ./control
         env:
           distribution_version: ${{ steps.distribution.outputs.version }}
           vim_version: ${{ steps.vim.outputs.version }}
@@ -133,11 +133,11 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ steps.deb.outputs.filename }}
           asset_name: ${{ steps.deb.outputs.filename }}
-          asset_content_type:
+          asset_content_type: application/vnd.debian.binary-package
       - uses: actions/upload-release-asset@v1.0.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: vim.tar.gz
           asset_name: kaoriya-vim_${{ steps.vim.outputs.version }}-1${{ steps.distribution.outputs.version }}.tar.gz
-          asset_content_type:
+          asset_content_type: application/gzip
