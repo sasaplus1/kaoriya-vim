@@ -1,8 +1,12 @@
 name: build
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+  pull_request:
 
 jobs:
   deb:
