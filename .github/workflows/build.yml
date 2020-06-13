@@ -127,14 +127,14 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           body: Vim ${{ steps.vim.outputs.version }} +kaoriya
-      - uses: actions/upload-release-asset@1.0.2
+      - uses: actions/upload-release-asset@v1.0.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ steps.deb.outputs.filename }}
           asset_name: ${{ steps.deb.outputs.filename }}
           asset_content_type:
-      - uses: actions/upload-release-asset@1.0.2
+      - uses: actions/upload-release-asset@v1.0.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
