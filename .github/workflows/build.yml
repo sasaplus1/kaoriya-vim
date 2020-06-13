@@ -112,11 +112,11 @@ jobs:
       - run: docker exec $(docker ps -q) bash -c 'apt --yes install locales && localedef -i ja_JP -c -f UTF-8 -A /usr/share/locale/locale.alias ja_JP.UTF-8'
       - run: docker exec $(docker ps -q) bash -c 'LANG=ja_JP.UTF-8 vim --version'
       - run: docker stop $(docker ps -q)
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@2
         with:
           name: ${{ steps.deb.outputs.filename }}
           path: ${{ steps.deb.outputs.filename }}
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@2
         with:
           name: kaoriya-vim_${{ steps.distribution.outputs.version }}-1${{ steps.distribution.outputs.version }}.tar.gz
           path: vim.tar.gz
