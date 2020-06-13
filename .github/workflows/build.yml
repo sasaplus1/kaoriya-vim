@@ -116,3 +116,7 @@ jobs:
         with:
           name: ${{ steps.deb.outputs.filename }}
           path: ${{ steps.deb.outputs.filename }}
+      - uses: actions/upload-artifact@master
+        with:
+          name: kaoriya-vim_${{ steps.distribution.outputs.version }}-1${{ steps.distribution.outputs.version }}.tar.gz
+          path: vim.tar.gz
