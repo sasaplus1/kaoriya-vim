@@ -79,7 +79,7 @@ jobs:
       - run: docker cp $(docker ps -q):/root/vim-kaoriya/VERSION .
       - id: distribution
         run: >-
-          echo "::set-output name=version::$(docker exec $(docker ps -q) bash -c '. /etc/os-release && echo ${VERSION_CODENAME:-sid}')"
+          echo "::set-output name=version::$(docker exec $(docker ps -q) bash -c 'apt --yes update && apt --yes install lsb-release && lsb_release -cs')"
       - run: docker stop $(docker ps -q)
       - id: vim
         run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
