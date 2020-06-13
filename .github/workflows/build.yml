@@ -77,9 +77,10 @@ jobs:
       - run: docker run --detach --init --rm ${{ github.repository }} tail -f /dev/null
       - run: docker cp $(docker ps -q):/tmp/vim.tar.gz .
       - run: docker cp $(docker ps -q):/root/vim-kaoriya/VERSION .
+      - run: docker exec $(docker ps -q) bash -c 'apt --yes update && apt --yes install lsb-release'
       - id: distribution
         run: >-
-          echo "::set-output name=version::$(docker exec $(docker ps -q) bash -c 'apt --yes update && apt --yes install lsb-release && lsb_release -cs')"
+          echo "::set-output name=version::$(docker exec $(docker ps -q) lsb_release -cs)"
       - run: docker stop $(docker ps -q)
       - id: vim
         run: echo "::set-output name=version::$(printf -- '%b' 'all:\n\t@printf -- $(VIM_VER)' | make -f ./VERSION -f -)"
