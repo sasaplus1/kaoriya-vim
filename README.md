@@ -9,6 +9,12 @@ my KaoriYa Vim for Linux
 
 see [latest release](https://github.com/sasaplus1/kaoriya-vim/releases/latest).
 
+## Related
+
+- https://github.com/vim/vim
+- https://github.com/koron/vim-kaoriya
+- https://github.com/splhack/macvim-kaoriya
+
 ## License
 
 The MIT license.
