@@ -41,7 +41,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          body: Vim ${{ steps.vim.outputs.version }} +kaoriya
+          body: Vim +kaoriya
       - run: echo '${{ steps.create_release.outputs.upload_url }}' > upload_url.txt
         if: startsWith(github.ref, 'refs/tags/') && steps.create_release.outcome == 'success'
       - uses: actions/upload-artifact@v2
