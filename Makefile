@@ -54,5 +54,4 @@ build: arguments += --build-arg 'configurations=$(configurations)'
 build: arguments += --build-arg 'image=$(image)'
 build: arguments += --build-arg 'setup=$(setup)'
 build: ## build deb package
-	docker image prune --force
 	docker build $(arguments) .
