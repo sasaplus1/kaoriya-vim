@@ -2,8 +2,6 @@
 
 SHELL := /bin/bash
 
-export DOCKER_BUILDKIT := 1
-
 makefile := $(abspath $(lastword $(MAKEFILE_LIST)))
 makefile_dir := $(dir $(makefile))
 
@@ -35,6 +33,7 @@ all: ## output targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(makefile) | awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
 .PHONY: build
+build: export DOCKER_BUILDKIT := 1
 build: image := ubuntu:latest
 build: setup := $(strip \
   DEBIAN_FRONTEND=noninteractive \
