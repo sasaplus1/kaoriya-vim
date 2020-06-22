@@ -9,6 +9,18 @@ my KaoriYa Vim for Linux
 
 see [latest release](https://github.com/sasaplus1/kaoriya-vim/releases/latest).
 
+### Example
+
+```console
+$ cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=18.04
+DISTRIB_CODENAME=bionic
+DISTRIB_DESCRIPTION="Ubuntu 18.04.2 LTS"
+$ curl -LO https://github.com/sasaplus1/kaoriya-vim/releases/download/8.2.0087-1/kaoriya-vim_8.2.0087-1bionic_amd64.deb
+$ apt install ./kaoriya-vim_8.2.0087-1bionic_amd64.deb
+```
+
 ## Related
 
 - https://github.com/vim/vim
