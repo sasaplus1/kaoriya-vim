@@ -9,7 +9,9 @@ my KaoriYa Vim for Linux
 
 see [latest release](https://github.com/sasaplus1/kaoriya-vim/releases/latest).
 
-### Example
+### How to install
+
+In Ubuntu:
 
 ```console
 $ cat /etc/lsb-release
