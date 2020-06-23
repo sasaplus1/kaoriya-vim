@@ -1,6 +1,6 @@
 # kaoriya-vim
 
-![build](https://github.com/sasaplus1/kaoriya-vim/workflows/build/badge.svg)
+[![build](https://github.com/sasaplus1/kaoriya-vim/workflows/build/badge.svg)](https://github.com/sasaplus1/kaoriya-vim/actions?query=workflow%3Abuild)
 [![renovate](https://badges.renovateapi.com/github/sasaplus1/kaoriya-vim)](https://renovatebot.com)
 
 my KaoriYa Vim for Linux
