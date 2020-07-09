@@ -19,7 +19,7 @@ RUN git clone --depth 1 https://github.com/koron/guilt.git && \
   git clone --depth 1 https://github.com/koron/vim-kaoriya.git
 
 RUN cd ./vim-kaoriya && \
-  git submodule update --depth 1 --init --recommend-shallow --recursive -- ./patches ./vim
+  git submodule update --depth 1 --init --recommend-shallow --recursive -- ./contrib/vimdoc-ja ./patches ./vim
 
 RUN cd ./guilt && \
   make -j $(nproc) PREFIX=/opt/guilt install
@@ -43,8 +43,7 @@ RUN cd ./vim-kaoriya/vim && \
 
 RUN make -C ./vim-kaoriya/build/xubuntu VIM_DIR="${prefix}/share/vim" install
 
-RUN git clone --depth 1 https://github.com/vim-jp/vimdoc-ja.git "${prefix}/share/vim/plugins/vimdoc-ja" && \
-  rm -rf "${prefix}/share/vim/plugins/vimdoc-ja/.git" "${prefix}/share/vim/plugins/vimdoc-ja/.gitignore"
+RUN cp -rf ./vim-kaoriya/contrib/vimdoc-ja "${prefix}/share/vim/plugins"
 
 RUN printf -- '\n\n%s\n' "PATH=${prefix}/bin:\$PATH" >> ${HOME}/.bashrc
 
