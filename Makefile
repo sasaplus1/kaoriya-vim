@@ -44,7 +44,7 @@ build: setup := $(strip \
   build-essential libncurses-dev \
   gettext \
   lua5.1 liblua5.1-dev luajit libluajit-5.1-dev \
-  python python-dev \
+  python2 python2-dev \
   python3 python3-dev && \
   apt-get --yes clean && \
   rm -rf /var/lib/apt/lists/* \
