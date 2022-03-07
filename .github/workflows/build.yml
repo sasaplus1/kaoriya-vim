@@ -48,7 +48,7 @@ jobs:
         with:
           name: upload_url.txt
           path: upload_url.txt
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: sudo apt --yes update
       - run: sudo apt --yes install fakeroot
       - run: >
